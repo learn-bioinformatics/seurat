@@ -7331,6 +7331,7 @@ SingleExIPlot <- function(
       ylab <- axis.label
       geom <- list(
         vln.geom(scale = 'width', adjust = adjust, trim = TRUE),
+        geom_boxplot(width=0.1),
         theme(axis.text.x = element_text(angle = 45, hjust = 1))
       )
       if (is.null(x = split)) {
