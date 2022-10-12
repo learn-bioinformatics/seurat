@@ -599,7 +599,8 @@ VlnPlot <- function(
   fill.by = 'feature',
   flip = FALSE,
   add.noise = TRUE,
-  raster = NULL
+  raster = NULL,
+  box.plot = FALSE
 ) {
   if (
     !is.null(x = split.by) &
@@ -636,7 +637,8 @@ VlnPlot <- function(
     fill.by = fill.by,
     flip = flip,
     add.noise = add.noise,
-    raster = raster
+    raster = raster,
+    box.plot = box.plot
   ))
 }
 
@@ -5596,7 +5598,8 @@ ExIPlot <- function(
   fill.by = NULL,
   flip = FALSE,
   add.noise = TRUE,
-  raster = NULL
+  raster = NULL,
+  box.plot = FALSE
 ) {
   assay <- assay %||% DefaultAssay(object = object)
   DefaultAssay(object = object) <- assay
@@ -5700,7 +5703,8 @@ ExIPlot <- function(
         pt.size = pt.size,
         log = log,
         add.noise = add.noise,
-        raster = raster
+        raster = raster,
+        box.plot = box.plot
       ))
     }
   )
@@ -7255,7 +7259,8 @@ SingleExIPlot <- function(
   seed.use = 42,
   log = FALSE,
   add.noise = TRUE,
-  raster = NULL
+  raster = NULL,
+  box.plot = TRUE
 ) {
    if (!is.null(x = raster) && isTRUE(x = raster)){
     if (!PackageCheck('ggrastr', error = FALSE)) {
@@ -7331,7 +7336,6 @@ SingleExIPlot <- function(
       ylab <- axis.label
       geom <- list(
         vln.geom(scale = 'width', adjust = adjust, trim = TRUE),
-        geom_boxplot(width=0.1),
         theme(axis.text.x = element_text(angle = 45, hjust = 1))
       )
       if (is.null(x = split)) {
@@ -7392,6 +7396,9 @@ SingleExIPlot <- function(
   }
   if (pt.size > 0) {
     plot <- plot + jitter
+  }
+  if (isTRUE(box.plot)) {
+    plot <- plot + geom_boxplot(width=0.1, color="white", outlier.size=0.5, outlier.stroke=0.1)
   }
   if (!is.null(x = cols)) {
     if (!is.null(x = split)) {
